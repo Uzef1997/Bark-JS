@@ -1,7 +1,7 @@
 
 const injectDecimal = require('./utils/injectDecimal')
 
-exports.fixedLength = (length) => ({
+export const fixedLength = (length) => ({
   barcode,
   fnc = String.fromCharCode(29),
 }) => {
@@ -46,7 +46,7 @@ exports.fixedLengthDecimal = (length, decimalPositionFromEnd) => ({
   barcode,
   fnc = String.fromCharCode(29),
 }) => {
-  const { value: originalValue, raw } = this.fixedLength(length)({ barcode, fnc })
+  const { value: originalValue, raw } = fixedLength(length)({ barcode, fnc })
   const value = injectDecimal(originalValue, decimalPositionFromEnd)
   return {
     value,
@@ -115,7 +115,7 @@ exports.date = () => ({
   barcode,
   fnc = String.fromCharCode(29),
 }) => {
-  const { value: yymmdd, raw } = this.fixedLength(6)({ barcode, fnc })
+  const { value: yymmdd, raw } = fixedLength(6)({ barcode, fnc })
 
   const year = parseInt(yymmdd.slice(0, 2), 10)
   const month = yymmdd.slice(2, 4)
@@ -142,7 +142,7 @@ exports.dateTime = ({ optionalMinutesAndSeconds = false } = {}) => ({
   barcode,
   fnc = String.fromCharCode(29),
 }) => {
-  const { value: yymmddhhmm, raw } = this.fixedLength(optionalMinutesAndSeconds ? 12 : 10)({ barcode, fnc })
+  const { value: yymmddhhmm, raw } = fixedLength(optionalMinutesAndSeconds ? 12 : 10)({ barcode, fnc })
 
   const { value: yymmdd } = this.date()({
     barcode: yymmddhhmm.slice(0, 6),
